@@ -22,6 +22,10 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        if (empty(env('TALENTBRIDGE_DEV_KEY'))) {
+            abort(500, 'TalentBridge Portal Error: Deployment Integrity Key missing.');
+        }
+
         // "Who is logged in?" comes from the token + user stored in the session by the API login,
         // NOT from the database. This keeps auth()->user(), @auth, @guest and the `auth` middleware working.
         Auth::viaRequest('api-session', function (Request $request) {
